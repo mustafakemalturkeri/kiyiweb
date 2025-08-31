@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kıyı</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/img/cover.jpg">
+</head>
+<body>
+    <div class="album-container">
+        <!-- Loading Screen -->
+        <div class="loading-screen" id="loadingScreen">
+            <div class="loading-background"></div>
+            <div class="loading-content">
+                <div class="loading-spinner">
+                    <div class="spinner-circle"></div>
+                </div>
+                <!--<div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>-->
+            </div>
+        </div>
+
+        <!-- Album Title/Cover Page -->
+        <div class="title-page" id="titlePage">
+            <div class="title-background"></div>
+            <div class="title-content">
+                <!-- Play Button -->
+                <button class="play-button" id="playButton">
+                    <span class="play-icon">▶</span>
+                </button>
+                <div class="album-info">
+                    
+                    
+                    <!-- Credits/Künye Section -->
+                    <div class="credits-section">
+                        <button class="credits-toggle" id="creditsToggle">
+                            <span class="credits-text"></span>
+                            <span class="credits-arrow">▼</span>
+                        </button>
+                        
+                        <div class="credits-content" id="creditsContent">
+                            <div class="credits-scroll">
+                                <h3>Renk - Kıyı</h3>
+                                <p><br></p>
+                                <p><strong>Anıl Kahvecioğlu</strong> - Gitar ve Vokal</p>
+                                <p><strong>Mustafa Kemal Türkeri</strong> - Bas ve Ukulele</p>
+                                <p><strong>Gökhan Şensönmez</strong> - Gitar</p>
+                                <p><strong>Bulut Gör</strong> - Davul</p>
+                                <p><br></p>
+                                
+
+                                <p><strong>Yapımcı:</strong> Mirage</p>
+                                <p><strong>Kayıt:</strong> Ayhan Aydın, Bulut Gör</p>
+                                <p><strong>Miks:</strong> Uğur Karaman, Bulut Gör</p>
+                                <p><strong>Mastering:</strong> Vasilis Ntokakis (No Clear Mind)</p>
+                                <p><strong>Görsel Tasarım:</strong> Onur Kılıç</p>
+                                <p><strong>Web Tasarımı:</strong> Mustafa Kemal Türkeri</p>
+                                <p><strong>Yıl:</strong> 2020</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </div>
+
+        <!-- Dynamic Track Container -->
+        <div class="track-container" id="trackContainer">
+            <!-- Background will be dynamically set -->
+            <div class="background-image" id="backgroundImage"></div>
+            
+            <!-- Content Overlay -->
+            <div class="content-overlay">
+                <div class="track-content-wrapper">
+                    <div class="track-content">
+                        <div class="track-text-container" id="trackTextContainer">
+                            <div class="track-text" id="trackText">
+                                <!-- Content will be dynamically loaded -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Spotify Player Widget - Moved to bottom left -->
+        <div class="spotify-widget" id="spotifyWidget">
+            <div class="spotify-content" id="spotifyContent">
+                <!-- Spotify embed will be loaded here -->
+            </div>
+            <button class="spotify-toggle" id="spotifyToggle">
+                <span class="expanded-icon">−</span>
+                <span class="collapsed-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#1ed760">
+                        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
+                    </svg>
+                </span>
+            </button>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="album-nav">
+            <div class="nav-dots" id="navDots">
+                <!-- Dots will be dynamically generated -->
+            </div>
+        </nav>
+
+        <!-- Audio Controls - Moved to top left -->
+        <div class="audio-controls">
+            <div class="track-info-display">
+                <span class="track-number" id="trackNumberControl">01</span>
+                <span class="track-total" id="trackTotalControl">/ 11</span>
+                <span class="track-name" id="trackNameControl">son defa</span>
+            </div>
+        </div>
+
+        <!-- Navigation Arrows -->
+        <div class="nav-arrows">
+            <button class="prev-btn" id="prevBtn">‹</button>
+            <button class="next-btn" id="nextBtn">›</button>
+        </div>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+</body>
+</html>

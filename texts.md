@@ -1,0 +1,195 @@
+# son defa
+
+Kıyıdan seyretmek; mümkün olabilecek her şeyin kıyısından. Kıyı boşluğu gösterir, renksizliği, hissizliği. Anlam burada bulur kendini, mümkünlüğün kıyısında. Kim bakıyorsa odur sahibi anlamın; bulutu o çizer ya da toprağın kokusunu o içine çeker. Boşluktan bir varlık yaratır, ne olacağı bilinemeyen ya da ne olduğu. Tek bilebileceği şey onun sonsuzluktan doğduğudur. Sonsuzdur anlamın hayatı, ve aynı zamanda boşluk.
+
+Kıyıdan ayrılma vakti. Kırık bir tablo. İşte ışık orada!
+
+Bir tabloda uyutulan
+İçi isyan dolu bir insan
+Kaybolan bütün duygular
+Saklanmış kuytuda
+Gözleri kapanmış
+Sözcükleri yasaklanmış
+Bir sıkıntı var içimde
+Dünyaya karşı
+Bir bulantı var içimde
+Dünyaya karşı
+Tabloda bir sızıntı
+Damlıyor her bir hayal
+Bu çerçeve kırılmıyor hiçbir zaman
+Umutlar var olmadan
+Umutlar var olmuyor hiçbir zaman
+Uykumdan uyanmadan
+Uyandı
+Tüm zehirler vücudunda
+Hayallere tutundu son bir defa
+Kırıldı tüm zincirler aydınlığa
+Bir adım daha atmak
+Son defa
+
+# düşüş
+
+İşte sonsuzluk. Kıyıdan hiç durmadan uzaklaşmak, arkana bile bakmadan. Tahmin edebilir miydin böyle olacağını? Hayır, ne olduğunu tahmin edemezdin, ne olacağını da. Tablonun çekmecelerinin kırıklığıydı bu, başka bir şey değil.
+
+Düşüş. Yukarı doğru. Uçarken aşağı doğru... Dışarısı olmuş iç, her şey sanki bir hiç.
+
+# Özgürlük
+
+Beklemek, beklemek, beklemek ve sonunda derin bir nefes almak. Bütün doğrular yanlışlanmalı, yanlışlar ise doğruluğa doğru bükülmeli. Üçü beşe eşitlemeli, dördü aradan çıkarmalı. Boşluğu anlamlandırmalı.
+
+Tiyatro yıkıldı, roller yok oldu. Boşluğun kendini anlamlandırmasıydı bu. Kıyının bir fotoğrafıydı. Özgürlüğün hiçbir zaman kaybolmayacak varlığıydı.
+
+Mavi bir nehir
+Karlar beyaz
+Yapraklar yeşil
+Hayat onun için rengarenk
+Bu bir özgürlük
+Sadece koşmak istiyor
+Neden biliyor
+Ne kadar koşsa da
+Artık bir tabloda değil
+Bir tiyatro değil
+Artık hayatım
+Bir sahne değil
+Artık yaşantım
+Bir rol değil
+Bana verilen
+Artık varım
+Ve ben özgürüm!
+
+# evsiz
+
+Kıyı bazen kapıyı açmaktır, bazense kapatmak. Arkana döndüğünde hiçbir şey görememek. Sürekli yeniyi tatmak, onunla bütünleşmek. İnsanları ilk defa görmek, altından olmayan kalplerini...
+
+İnsanlar her yerde, hiç susmuyorlar. Sen de susmuyorsun, susmamalısın, susmayacaksın.
+
+Aradaki farkı anlayacaksın. Onlara kıyıdan bakacaksın. Duvarların arkasından uzun uzun bağıracaksın.
+
+Karşımda bir kapı
+Açılır yeni bir dünyaya
+Korkuyorum kapıyı çalmaya
+Kim bilir ne var ardında
+İnsanlar bakıyor yüzüme
+Sanki tanıyorlar beni
+Elimde bir kalem çiziyorum
+Yüzüme bir gülümseme
+Olmaz diyorlar
+Sadece kendin ol
+Ve gül
+Sessizlik soldu bu defa
+
+# mekanik hayat
+
+Kutuların içinde insanlara bağıranlar, ruhlarını ele geçirenler. Satılmışlar ve satılmak üzere olanlar. Evet diyenler. Hayırı hiçe sayanlar, onu yok edenler. Efendimciler ve emirciler. Gölgelerini satmış olanlar. Yağmur altında ıslanmaya korkanlar. Dağlarda dolaşmaya vakit bulamayanlar. Derinlikleri unutanlar. Yüzeyde nefes alanlar.
+
+İçeri girdiğin kapıyı yerinde bulamamak. Rüzgar yüzüne vuruyor ve sen geri dönemiyorsun. Anlıyor musun?
+
+# kırmızı
+
+İşte o anda kırmızıyı yarattı. Yıldızlarla güneşi birleştirdi. Karanlığın hiç bilinmeyen noktalarındaki taşların özünü çaldı. Tan vaktinin rengini içine çekti ve onu yıldızlarla güneşin birleştiği noktaya üfledi. Parmaklarıyla ona bir beden verdi. Çizgilerini netleştirdi. Gözleri altındandı. Dudakları kıpkırmızıydı. İşte bu onun sanat eseriydi.
+
+Önce kalbini aldı. Sonra öldürdü. Bedenini ise soğuk ateşlerde yaktı. Küllerini göklerden aşağıya savurdu...
+
+Beni artık bırakın ne olur
+Yuttular ruhumdaki o tınıyı
+Bu nasıl bir şey
+Daha önce böyle bir şey
+Hiç hissetmedim
+İçimdeki esaret kayboluyor
+Seni kokladıkça
+Kırmızı
+
+# kırmızının külleri
+
+"Şu gökten düşen küller kimin? İnsan kendi küllerini kucaklayabilir mi? İnanmaya karşı ihanet. İşte ölümün formülü. Vücudumdaki yara izlerini görüyor musunuz? Peki ya şu akan Kırmızı kanı? Vücudumdan taşan. Sokaklarda dolaşan. İnancımın böylesine sarsılmasına, yok olmasına dayanabilir miyim? Kırmızı, beni neden terk ettin?"
+
+Ölmek. Nabzın giderek yavaşlaması ve durması. Sıradan.
+
+Ölmek. İnandığını kaybetmek. Çarmıha gerilmek.
+
+Kırmızının külleri uçuyor
+Varlığı boşluğun canımı yakıyor
+Sessizlik sarıyor havayı ihanetin
+Aslında kül olan o değil ben miyim
+Ben seni hissederken
+Sen
+Yüzüyor suda hikayeler
+Yansıyor yüzüme bütün o cümleler
+Hakimi sanırken durumun
+Nesnesi olmak hayatın
+Ben sana inanırken
+Sen beni mahvettin
+Kurdular fikirleri
+Sundular gölgeyi
+Çaldılar gerçeği
+
+# çıkış yok
+
+"Çıkış kapılarında hep aynı duvar. Kapı! Duvar! Kapı! Duvar! Halbuki ilk kapının önünde durduğum anı hatırlıyorum. Sonsuzluktu her şey."
+
+Çıkışlar kapalı. Çekmeceler kırık. Feryatlar sessiz. Denizler derin. Kalpler karanlık.
+
+Gölgeler korkutuyor beni
+Sen hiç gölgelere direndin mi
+Bir çocuk öldüğünde susmalı mı
+Canlar yitip giderken kaçmalı mı
+İnsanlık öldü duydunuz mu
+Vicdan kayboldu unuttunuz mu
+Karanlık çevreliyor her yanımı
+Gölgeler vuruyor her gün kalbime
+Susmak yedi bitirdi beni
+Hala zamanı gelmedi mi
+Ve işte karşımda bir gölge...
+
+# fantasmagorya
+
+"Kıyıdan bakıyorum hala hayata. Bu gölgeleri gerçekten ben mi yarattım? Özgürlüğümü bir kapının paspasında yitirdim. Böyle olacağını bilemezdim."
+
+Yerlerinizi alamazsınız. Bizzat oynamak zorundasınız. Gölgelerinizi siz satmadınız mı? Özgürlüğünüzü gölgeleri yaratmak için feda etmediniz mi? Başrollerin üzerinde bir rol daha var.
+
+Gölgeler yok edilmeli.
+
+Hem de bir daha hiç geri dönmemecesine.
+
+# mavide boğulma
+
+Suya düştü. Boğulmak üzere olduğunu sandı. Sonra derin bir nefes aldı. Su baloncuklarının içinde birbirlerinin gözlerine bakanları gördü. Mürekkepleriyle hayatlarını resmeden balıkları. Deniz kabuklarının içine saklanmış, ucu bucağı olmayan evleri. Kollarından tutup sanki ona yol gösteren balinaları.
+
+Bir bisiklet buldu. Suyun dibine inmeliydi. Gözlerinden yaşlar süzüldü. Gerçekleşmeyenin göz yaşları.
+
+Hayaller gibi bazı şeyler
+Anlatmak yetmez
+Yaşamak gerek birer birer
+Düşlerin içinde bir ses
+Kal diyor bitmeyen nefesimde
+
+# renk
+
+Kıyıdan yaratıldı tüm renkler. Boşluğun sonsuzluğunda iç içe geçti her şey. Kesin çizgilerin muğlaklaşmasıyla son buluyor. Şu uçan kelebeği görüyor musun? Maviyi bulmuş sanki.
+
+Tablo ve insan. Daha fazla tablo, daha fazla insan. Tablonun olmadığı tek nokta yok. İçinde insanlar. Kurtulmaya çalışıyorlar. Bilmiyorlar. Belki de Tanrı olmak budur. Her şeyin üzerinde. Her şeyin ötesinde. Özgürlükten daha ağır. Kırmızıdan daha yoğun. Maviden daha derin.
+
+Kaybolan bir adam
+Yalnız başına
+Renkleri izliyor
+Özgürlüğün mavisini arıyor
+Kırmızı ise çoktan kaybolmuş
+Yeşil dakikalar uzakta
+Geçmiyor buralardan yıllardır
+Sarının canlılığı
+Artık yansımıyor bu hayata
+Hayatı grilikte
+siyaha çalan
+Masum bir çocuk bakıyor
+Beyazların içinde
+Ve bir kelebek mavinin
+Derinliklerinde uçuyor
+Esiyor rüzgar...
+Rüzgar kuzeyden
+Üşüyor adam
+Bıkmış artık
+Ne soğuk diyor
+Ne de ölüm
+Haykırıyor umutsuzca
+"Artık gri yok
+Hayat siyah..."

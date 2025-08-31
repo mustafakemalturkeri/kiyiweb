@@ -1,0 +1,100 @@
+{
+    "son defa": {
+        "id": "01",
+        "title": "Son Defa",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/5uHrwdudBjcSFKUIe0urhr?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "düşüş": {
+        "id": "02",
+        "title": "Düşüş",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/4pY4BzscOFrJTPCEBiJ21E?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "özgürlük": {
+        "id": "03",
+        "title": "Özgürlük",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/5gajZHYDJDJxgVQdpaz8mV?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "evsiz": {
+        "id": "04",
+        "title": "Evsiz",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/0iJYOQrYzf09jxIpTfQZDo?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "mekanik_hayat": {
+        "id": "05",
+        "title": "Mekanik Hayat",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/0BeLS2ed6R3XJ58nurHt2C?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "kırmızı": {
+        "id": "06",
+        "title": "Kırmızı",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/5b81WDCXF0F6FiOnh4Z3iQ?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "kırmızının_külleri": {
+        "id": "07",
+        "title": "Kırmızının Külleri",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/33YEzKO7fGyS6YY9gWVDrq?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "çıkış_yok": {
+        "id": "08",
+        "title": "Çıkış Yok",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/2SLKGfjBq7akIjiYC5xU62?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "fantasmagorya": {
+        "id": "09",
+        "title": "Fantasmagoriya",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/7bOO9lZRrueKkI7Yf7uA7Z?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "mavide_boğulma": {
+        "id": "10",
+        "title": "Mavide Boğulma",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/1kOcBIl7YwEflN78p0t3co?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    },
+
+    "renk": {
+        "id": "11",
+        "title": "Renk",
+        "artist": "Renk",
+        "album": "Kıyı",
+        "year": "2020",
+        "spotify_embed_code": "<iframe data-testid=\"embed-iframe\" style=\"border-radius:12px\" src=\"https://open.spotify.com/embed/track/3NRpr4D4OSnFvheadoLWuK?utm_source=generator\" width=\"100%\" height=\"152\" frameBorder=\"0\" allowfullscreen=\"\" allow=\"autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture\" loading=\"lazy\"></iframe>"
+    }
+}

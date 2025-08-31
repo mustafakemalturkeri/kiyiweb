@@ -1,0 +1,1002 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    background: #000;
+    color: white;
+}
+
+/* Loading Screen with Background Image */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 1s ease;
+}
+
+.loading-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/renk-kiyi-2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.4);
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.spinner-circle {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-left: 4px solid #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-bar {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.loading-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #fff, #4facfe);
+    border-radius: 2px;
+    width: 0%;
+    animation: loading 3s ease-in-out;
+}
+
+@keyframes loading {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+/* Album Title/Cover Page */
+.title-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 8000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 1s ease;
+}
+
+.title-page.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.1);
+}
+
+.title-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/renk-kiyi-2.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.7) contrast(1.1);
+}
+
+.title-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    max-width: 800px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.album-info {
+    margin-top: 4rem; /* Push credits section down */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.album-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    letter-spacing: 8px;
+    text-shadow: 3px 3px 15px rgba(0, 0, 0, 0.8);
+    animation: titleAppear 2s ease forwards;
+    opacity: 0;
+}
+
+.album-subtitle {
+    font-size: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 3px;
+    opacity: 0.9;
+    margin-bottom: 3rem;
+    animation: subtitleAppear 2s ease forwards 0.5s;
+    opacity: 0;
+}
+
+/* Credits Section */
+.credits-section {
+    margin-top: 2rem;
+    width: 100%; /* Full width instead of max-width */
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center vertically too */
+}
+
+.credits-toggle {
+    background: transparent; /* Remove background */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* Thinner border */
+    color: white;
+    padding: 0.8rem; /* Equal padding on all sides */
+    border-radius: 25px; /* Smaller border radius */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem; /* Slightly larger font for the arrow */
+    font-weight: 300;
+    letter-spacing: 0; /* Remove letter spacing that might cause offset */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0; /* Remove gap */
+    backdrop-filter: none; /* Remove backdrop filter */
+    width: auto; /* Auto width instead of 100% */
+    min-width: 50px; /* Minimum width for just the arrow */
+    margin: 0 auto; /* Center the button */
+    text-align: center; /* Ensure text is centered */
+}
+
+.credits-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
+}
+
+.credits-arrow {
+    transition: transform 0.3s ease;
+}
+
+.credits-toggle.expanded .credits-arrow {
+    transform: rotate(180deg);
+}
+
+.credits-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    background: transparent; /* Remove black background */
+    border-radius: 20px;
+    margin-top: 1rem;
+    backdrop-filter: none; /* Remove backdrop filter */
+    width: 100vw; /* Full width */
+    max-width: none; /* Remove max-width constraint */
+    margin-left: calc(-50vw + 50%); /* Center and expand full width */
+    margin-right: calc(-50vw + 50%);
+}
+
+.credits-content.expanded {
+    max-height: 60vh;
+}
+
+.credits-scroll {
+    padding: 2rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    text-align: center; /* Center all text */
+    max-width: 800px; /* Limit content width for readability */
+    margin: 0 auto; /* Center the content container */
+}
+
+.credits-scroll h3 {
+    color: #fff;
+    margin-bottom: 1rem;
+    margin-top: 2rem;
+    font-size: 1.3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 0.5rem;
+}
+
+.credits-scroll h3:first-child {
+    margin-top: 0;
+}
+
+.credits-scroll p {
+    margin-bottom: 0.8rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.credits-scroll strong {
+    color: #fff;
+}
+
+/* Custom scrollbar for credits */
+.credits-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.credits-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.credits-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.credits-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Play Button */
+.play-button {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    animation: playButtonAppear 2s ease forwards 1s;
+    opacity: 0;
+    margin: 0 auto; /* Center horizontally */
+}
+
+.play-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+}
+
+.play-icon {
+    margin-left: 8px; /* Center the triangle */
+}
+
+/* Animations */
+@keyframes titleAppear {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes subtitleAppear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes playButtonAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Album Container */
+.album-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Track Container */
+.track-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Increased from 1.2s to 2s */
+}
+
+/* Background Image - Clear and sharp, no overlay */
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    filter: brightness(1) contrast(1) saturate(1);
+    transition: all 1.5s ease; /* Increased from 0.8s to 1.5s */
+}
+
+/* Content overlay - minimal, just for text readability */
+.content-overlay {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(
+        135deg,
+        rgba(0, 0, 0, 0.3) 0%,
+        rgba(0, 0, 0, 0.1) 40%,
+        rgba(0, 0, 0, 0.1) 60%,
+        rgba(0, 0, 0, 0.3) 100%
+    );
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.track-content-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 6rem 2rem 4rem;
+}
+
+.track-content {
+    max-width: 900px;
+    width: 100%;
+    text-align: center;
+    color: white;
+}
+
+.track-text-container {
+    max-height: none;
+    overflow: visible;
+}
+
+/* Track content styling */
+.track-content-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 6rem 2rem 4rem; /* Increased top padding from 4rem to 6rem */
+}
+
+.track-content {
+    max-width: 900px;
+    width: 100%;
+    text-align: left; /* Changed from center to left */
+    color: white;
+}
+
+.track-text-container {
+    max-height: none;
+    overflow: visible;
+}
+
+/* Text styling with better readability */
+.paragraph {
+    font-size: 1.3rem;
+    line-height: 2.2;
+    margin-bottom: 2.5rem;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.9);
+    font-weight: 400; /* Changed from 300 to 400 for better readability */
+    letter-spacing: 0.5px;
+    color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    min-height: 1.3rem; /* Prevent layout shift */
+    text-align: justify; /* Justify paragraphs */
+    font-family: 'Montserrat', sans-serif;
+}
+
+.verse {
+    font-size: 1.1rem;
+    line-height: 2;
+    margin-bottom: 0.8rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+    font-weight: 400; /* Changed from 300 to 400 */
+    letter-spacing: 1px;
+    color: white;
+    min-height: 1.1rem; /* Prevent layout shift */
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Poem Styling - More readable */
+.poem {
+    margin-top: 3rem;
+    font-style: italic;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center; /* Keep verses centered */
+}
+
+/* Navigation Dots - Enhanced */
+.album-nav {
+    position: fixed;
+    top: 50%;
+    right: 3rem;
+    transform: translateY(-50%);
+    z-index: 1000;
+}
+
+.nav-dots {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.dot::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.dot:hover {
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(1.3);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+.dot:hover::before {
+    width: 6px;
+    height: 6px;
+}
+
+.dot.active {
+    background: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    transform: scale(1.4);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+}
+
+.dot.active::before {
+    width: 4px;
+    height: 4px;
+    background: #000;
+}
+
+/* Spotify Widget - Moved to bottom left, simplified */
+.spotify-widget {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.spotify-widget.collapsed {
+    left: 2rem !important; /* Keep same left position when collapsed */
+    bottom: 2rem !important; /* Keep same bottom position */
+}
+
+.spotify-widget.collapsed .spotify-toggle {
+    order: -1; /* Move button to the left when collapsed */
+}
+
+.spotify-content {
+    width: 320px;
+    max-width: calc(100vw - 4rem);
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(30, 215, 96, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.spotify-widget.collapsed .spotify-content {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.spotify-toggle {
+    background: rgba(0, 0, 0, 0.8);
+    color: #1ed760;
+    border: 1px solid rgba(30, 215, 96, 0.3);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.spotify-toggle:hover {
+    background: rgba(30, 215, 96, 0.2);
+    transform: scale(1.05);
+}
+
+/* Spotify icon styles */
+.spotify-toggle .collapsed-icon {
+    display: none;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.spotify-toggle .expanded-icon {
+    display: block;
+}
+
+.spotify-widget.collapsed .spotify-toggle .collapsed-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spotify-widget.collapsed .spotify-toggle .expanded-icon {
+    display: none;
+}
+
+.spotify-toggle .collapsed-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Spotify logo using CSS */
+.spotify-logo {
+    width: 20px;
+    height: 20px;
+    background: #1ed760;
+    border-radius: 50%;
+    position: relative;
+    display: inline-block;
+}
+
+.spotify-logo::before,
+.spotify-logo::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50px;
+    border-left: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+
+.spotify-logo::before {
+    width: 12px;
+    height: 8px;
+    border-top: 1.5px solid #000;
+    margin-top: -1px;
+}
+
+.spotify-logo::after {
+    width: 8px;
+    height: 5px;
+    border-top: 1px solid #000;
+    margin-top: 1px;
+}
+
+.spotify-content {
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.spotify-content iframe {
+    width: 100%;
+    border-radius: 8px;
+}
+
+/* Audio Controls - Moved to top left */
+.audio-controls {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+.track-info-display {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.track-info-display .track-number {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
+
+.track-info-display .track-total {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.track-info-display .track-name {
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+}
+
+/* Navigation Arrows */
+.nav-arrows {
+    position: fixed;
+    top: 50%;
+    left: 3rem;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.prev-btn, .next-btn {
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.prev-btn:hover, .next-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Track Info - Keep in top right */
+.track-info {
+    position: fixed;
+    top: 2rem;
+    right: 3rem;
+    z-index: 1000;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    letter-spacing: 2px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+}
+
+.track-number {
+    font-weight: 700;
+    color: white;
+}
+
+@keyframes wordAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes verseWordAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Enhanced Animations */
+@keyframes dramaticFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(100px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes lineAppear {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) scaleX(0);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) scaleX(1);
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .spinner-circle {
+        width: 50px;
+        height: 50px;
+        border-width: 3px;
+    }
+    
+    /* Title Page Mobile */
+    .title-content {
+        padding: 1rem;
+    }
+    
+    .play-button {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+    }
+    
+    .credits-section {
+        width: 100%; /* Full width on mobile too */
+    }
+    
+    .credits-toggle {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
+    
+    .credits-scroll {
+        padding: 1.5rem 1rem; /* Less side padding on mobile */
+    }
+    
+    .track-content-wrapper {
+        padding: 5rem 2rem 2rem; /* Increased side padding from 1rem to 2rem */
+    }
+    
+    .paragraph {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        padding: 1.5rem; /* Increased from 1rem to 1.5rem */
+    }
+    
+    .verse {
+        font-size: 1rem;
+    }
+    
+    .album-nav {
+        right: 2rem;
+    }
+    
+    .nav-arrows {
+        left: 1rem;
+        top: 60%;
+    }
+    
+    .audio-controls {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.8rem 1.5rem;
+    }
+    
+    .track-info {
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.2rem;
+        padding: 0.3rem 0.8rem;
+    }
+    
+    .spotify-widget {
+        width: 280px;
+        bottom: 1rem;
+        left: 1rem;
+    }
+    
+    .spotify-widget.collapsed {
+        left: 1rem; /* Override for mobile - keep same position */
+    }
+}
+
+@media (max-width: 480px) {
+    .spinner-circle {
+        width: 40px;
+        height: 40px;
+        border-width: 3px;
+    }
+    
+    /* Title Page Small Mobile */
+    .play-button {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+    
+    .credits-section {
+        width: 100%; /* Full width */
+    }
+    
+    .credits-toggle {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.7rem;
+    }
+    
+    .credits-scroll {
+        padding: 1.5rem 0.5rem; /* Even less side padding */
+    }
+    
+    .track-content-wrapper {
+        padding: 4rem 1.5rem 2rem; /* Increased side padding from 1rem to 1.5rem */
+    }
+    
+    .paragraph {
+        font-size: 1rem;
+        padding: 1.6rem; /* Increased from 1rem to 1.6rem */
+    }
+    
+    .verse {
+        font-size: 0.9rem;
+    }
+    
+    .nav-dots {
+        gap: 1rem;
+    }
+    
+    .dot {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .prev-btn, .next-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    .audio-controls {
+        padding: 0.6rem 1rem;
+    }
+    
+    .track-info-display .track-name {
+        display: none; /* Hide track name on very small screens */
+    }
+    
+    .spotify-widget {
+        width: calc(100vw - 2rem);
+        bottom: 0.5rem;
+        left: 1rem;
+    }
+    
+    .spotify-widget.collapsed {
+        left: 1rem; /* Override for small mobile - keep same position */
+        width: auto; /* Reset width when collapsed */
+    }
+    
+    .spotify-content {
+        padding: 0.8rem;
+    }
+    
+    .poem {
+        padding: 1rem;
+    }
+}
