@@ -249,6 +249,34 @@ class DynamicAlbumPlayer {
         });
     }
     
+    // Track Info Functions
+    showTrackInfo() {
+        const trackInfoPopup = document.getElementById('trackInfoPopup');
+        const trackInfoImage = document.getElementById('trackInfoImage');
+        
+        // Create image path based on current track number
+        const imagePath = `assets/img/kunye/${this.currentTrack.toString().padStart(2, '0')}.png`;
+        
+        // Create and load image
+        trackInfoImage.innerHTML = `<img src="${imagePath}" alt="Track ${this.currentTrack} Info" />`;
+        
+        // Show popup
+        trackInfoPopup.classList.add('show');
+        
+        // Prevent body scrolling
+        document.body.style.overflow = 'hidden';
+    }
+    
+    hideTrackInfo() {
+        const trackInfoPopup = document.getElementById('trackInfoPopup');
+        
+        // Hide popup
+        trackInfoPopup.classList.remove('show');
+        
+        // Restore body scrolling
+        document.body.style.overflow = '';
+    }
+    
     // Load track data dynamically from markdown or JSON
     loadTracksFromMarkdown() {
         return {
@@ -934,6 +962,8 @@ class DynamicAlbumPlayer {
         // Navigation arrows
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
+        const infoBtn = document.getElementById('infoBtn');
+        
         prevBtn.addEventListener('click', () => {
             this.hasUserInteracted = true;
             this.previousTrack();
@@ -941,6 +971,24 @@ class DynamicAlbumPlayer {
         nextBtn.addEventListener('click', () => {
             this.hasUserInteracted = true;
             this.nextTrack();
+        });
+        
+        // Info button
+        infoBtn.addEventListener('click', () => {
+            this.showTrackInfo();
+        });
+        
+        // Track info popup close
+        const trackInfoClose = document.getElementById('trackInfoClose');
+        const trackInfoPopup = document.getElementById('trackInfoPopup');
+        const trackInfoOverlay = document.querySelector('.track-info-popup-overlay');
+        
+        trackInfoClose.addEventListener('click', () => {
+            this.hideTrackInfo();
+        });
+        
+        trackInfoOverlay.addEventListener('click', () => {
+            this.hideTrackInfo();
         });
         
         // Keyboard controls

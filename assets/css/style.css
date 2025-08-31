@@ -1307,3 +1307,252 @@ body {
         padding: 1rem;
     }
 }
+
+/* Auto-hide Navigation Buttons */
+.nav-arrows, .nav-dots, .audio-controls {
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.nav-arrows.auto-hide, .nav-dots.auto-hide, .audio-controls.auto-hide {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+.nav-arrows:hover, .nav-dots:hover, .audio-controls:hover {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+}
+
+/* Show navigation on touch devices when touched */
+.nav-arrows.touch-active, .nav-dots.touch-active, .audio-controls.touch-active {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+}
+
+/* Play/Pause Indicator */
+.play-pause-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.play-pause-indicator.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.play-pause-indicator svg {
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+}
+
+@media (max-width: 768px) {
+    .play-pause-indicator {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .play-pause-indicator svg {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Auto-hide navigation styles */
+.auto-hide {
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.auto-hide.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Info Button */
+.info-btn {
+    position: fixed;
+    top: 2rem;
+    right: 3rem;
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.info-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: white;
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+}
+
+/* Track Info Popup */
+.track-info-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.track-info-popup.show {
+    display: flex;
+}
+
+.track-info-popup-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.track-info-popup-content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 85vh;
+    width: auto;
+    height: auto;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+.track-info-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10001;
+}
+
+.track-info-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.track-info-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: calc(90vw - 80px);
+    max-height: calc(85vh - 80px);
+}
+
+.track-info-image img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Desktop specific adjustments */
+@media (min-width: 769px) {
+    .track-info-popup-content {
+        max-height: 75vh;
+        padding: 50px;
+    }
+    
+    .track-info-image {
+        max-width: calc(90vw - 100px);
+        max-height: calc(75vh - 100px);
+    }
+    
+    .track-info-image img {
+        max-width: 60vw;
+        max-height: 50vh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .info-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        top: 1.5rem;
+        right: 1.5rem;
+    }
+    
+    .track-info-popup-content {
+        max-width: 95vw;
+        max-height: 90vh;
+        padding: 20px;
+    }
+    
+    .track-info-image {
+        max-width: calc(95vw - 40px);
+        max-height: calc(90vh - 40px);
+    }
+    
+    .track-info-close {
+        top: 10px;
+        right: 15px;
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
+    }
+}
