@@ -1,11 +1,17 @@
-// Dynamic Album Player System with Spotify Integration
+// Dynamic Album Player System with Audio Integration
 class DynamicAlbumPlayer {
     constructor() {
         this.currentTrack = 1;
         this.totalTracks = 11;
         this.isTransitioning = false;
-        this.spotifyData = null;
-        this.isLoadingComplete = false; // Add loading state
+        this.audioData = null;
+        this.isLoadingComplete = false;
+        this.audioPlayer = null;
+        this.isPlaying = false;
+        this.hasUserInteracted = false; // Track user interaction for autoplay
+        this.preloadedAudios = {}; // Store preloaded audio elements
+        this.lastPlayPauseTime = 0; // Prevent rapid play/pause triggers
+        this.isSeeking = false; // Flag to prevent timeupdate interference during seeking
         
         // Track data from markdown
         this.tracks = this.loadTracksFromMarkdown();
@@ -15,28 +21,232 @@ class DynamicAlbumPlayer {
 
     async init() {
         this.showLoadingScreen();
-        await this.loadSpotifyData();
+        await this.loadAudioData();
+        await this.preloadAllAudios(); // Preload all audio files during loading
+        this.setupAudioPlayer();
         this.generateNavigationDots();
         this.setupEventListeners();
-        this.setupTitlePage(); // Setup title page events
-        this.loadTrack(this.currentTrack, false); // Don't start animations yet
+        this.setupTitlePage();
+        this.loadTrack(this.currentTrack, false);
+        await this.loadAudioForTrack(this.currentTrack); // Load audio for initial track after preload
         
-        // Hide loading screen and show title page
-        setTimeout(() => {
-            this.hideLoadingScreen();
-            this.showTitlePage();
-            this.isLoadingComplete = true;
-        }, 3000);
+        // Hide loading screen and show title page after all audio is loaded
+        this.hideLoadingScreen();
+        this.showTitlePage();
+        this.isLoadingComplete = true;
     }
     
-    async loadSpotifyData() {
+    async loadAudioData() {
         try {
-            const response = await fetch('spotify_links.json');
-            this.spotifyData = await response.json();
-            console.log('Spotify data loaded successfully');
+            const response = await fetch('links.json');
+            console.log('Response status:', response.status);
+            console.log('Response ok:', response.ok);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const text = await response.text();
+            console.log('Response text:', text);
+            
+            this.audioData = JSON.parse(text);
+            console.log('Audio data loaded successfully:', this.audioData);
         } catch (error) {
-            console.error('Error loading Spotify data:', error);
+            console.error('Error loading audio data:', error);
         }
+    }
+
+    async preloadAllAudios() {
+        if (!this.audioData) return;
+        
+        // Clear any existing preloaded audios first
+        this.preloadedAudios = {};
+        
+        console.log('Starting to preload all audio files...');
+        this.updateLoadingText('Şarkılar yükleniyor...');
+        
+        const totalTracks = Object.keys(this.audioData.tracks).length;
+        let loadedCount = 0;
+        
+        // Load all tracks sequentially to ensure they're fully loaded
+        for (let trackNum = 1; trackNum <= this.totalTracks; trackNum++) {
+            const audioPath = this.audioData.tracks[trackNum.toString()];
+            if (audioPath) {
+                console.log(`Loading track ${trackNum}: ${audioPath}`);
+                
+                try {
+                    await new Promise((resolve, reject) => {
+                        const audio = new Audio();
+                        audio.preload = 'auto'; // Load everything at once
+                        audio.crossOrigin = 'anonymous';
+                        
+                        let isComplete = false;
+                        
+                        const complete = () => {
+                            if (!isComplete) {
+                                isComplete = true;
+                                this.preloadedAudios[trackNum] = audio;
+                                loadedCount++;
+                                const percentage = Math.round((loadedCount / totalTracks) * 100);
+                                this.updateLoadingText(`Şarkılar yükleniyor... ${percentage}%`);
+                                
+                                // Duration logging için iyileştirme
+                                let durationText = 'Unknown';
+                                if (audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+                                    durationText = `${audio.duration.toFixed(2)}s`;
+                                } else if (audio.buffered.length > 0) {
+                                    const bufferedEnd = audio.buffered.end(audio.buffered.length - 1);
+                                    if (bufferedEnd && !isNaN(bufferedEnd) && isFinite(bufferedEnd)) {
+                                        durationText = `~${bufferedEnd.toFixed(2)}s (from buffer)`;
+                                    }
+                                } else {
+                                    durationText = 'Will detect during playback';
+                                }
+                                
+                                console.log(`✓ Track ${trackNum} loaded (duration: ${durationText}, ${percentage}%)`);
+                                resolve();
+                            }
+                        };
+                        
+                        // Wait for the audio to be fully loaded with metadata
+                        audio.addEventListener('canplaythrough', () => {
+                            console.log(`✓ Track ${trackNum} can play through, duration: ${audio.duration}s`);
+                            complete();
+                        });
+                        
+                        audio.addEventListener('loadedmetadata', () => {
+                            console.log(`✓ Track ${trackNum} metadata loaded, duration: ${audio.duration}s, readyState: ${audio.readyState}`);
+                        });
+                        
+                        audio.addEventListener('loadstart', () => {
+                            console.log(`🔄 Track ${trackNum} load started`);
+                        });
+                        
+                        audio.addEventListener('progress', (e) => {
+                            console.log(`⏳ Track ${trackNum} loading progress, readyState: ${audio.readyState}`);
+                        });
+                        
+                        audio.addEventListener('error', (e) => {
+                            if (!isComplete) {
+                                console.error(`✗ Failed to load track ${trackNum}:`, e);
+                                console.error(`Audio error details:`, {
+                                    error: audio.error,
+                                    networkState: audio.networkState,
+                                    readyState: audio.readyState,
+                                    src: audio.src
+                                });
+                                reject(e);
+                            }
+                        });
+                        
+                        // Set timeout for tracks that might not load
+                        setTimeout(() => {
+                            if (!isComplete) {
+                                console.warn(`⚠ Track ${trackNum} loading timeout, continuing...`);
+                                complete();
+                            }
+                        }, 20000); // 20 second timeout per track
+                        
+                        audio.src = audioPath;
+                        audio.load();
+                    });
+                } catch (error) {
+                    console.error(`Failed to load track ${trackNum}, continuing...`, error);
+                    loadedCount++;
+                }
+            }
+        }
+        
+        console.log('All audio files preloaded successfully!');
+        this.updateLoadingText('Tüm şarkılar hazır!');
+        
+        // Wait a moment to show completion message
+        await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    
+    updateLoadingText(text) {
+        const loadingText = document.querySelector('.loading-text');
+        if (loadingText) {
+            loadingText.textContent = text;
+        }
+    }
+
+        setupAudioPlayer() {
+        this.audioPlayer = document.getElementById('audioPlayer');
+        this.playPauseBtn = document.getElementById('playPauseBtn');
+        this.progressBar = document.getElementById('progressBar');
+        this.progressFill = document.getElementById('progressFill');
+        this.currentTimeDisplay = document.getElementById('currentTime');
+        this.durationDisplay = document.getElementById('duration');
+        this.volumeSlider = document.getElementById('volumeSlider');
+        this.volumeBtn = document.getElementById('volumeBtn');
+        
+        this.setupAudioEventListeners();
+    }
+    
+    setupAudioEventListeners() {
+        // Remove old listeners if they exist
+        if (this.audioPlayer) {
+            // Audio player UI event listeners
+            this.playPauseBtn.removeEventListener('click', this.playPauseHandler);
+            this.progressBar.removeEventListener('click', this.progressBarHandler);
+            this.volumeSlider.removeEventListener('input', this.volumeHandler);
+            this.volumeBtn.removeEventListener('click', this.muteHandler);
+            
+            // Audio element event listeners
+            this.audioPlayer.removeEventListener('loadedmetadata', this.metadataHandler);
+            this.audioPlayer.removeEventListener('timeupdate', this.timeupdateHandler);
+            this.audioPlayer.removeEventListener('ended', this.endedHandler);
+            this.audioPlayer.removeEventListener('error', this.errorHandler);
+            this.audioPlayer.removeEventListener('play', this.playHandler);
+            this.audioPlayer.removeEventListener('durationchange', this.durationChangeHandler);
+        }
+        
+        // Create bound handlers
+        this.playPauseHandler = () => {
+            this.hasUserInteracted = true; // Enable autoplay
+            this.togglePlayPause();
+        };
+        this.progressBarHandler = (e) => this.seekAudio(e);
+        this.volumeHandler = () => this.setVolume();
+        this.muteHandler = () => this.toggleMute();
+        this.metadataHandler = () => this.updateDuration();
+        this.timeupdateHandler = () => this.updateProgress();
+        this.endedHandler = () => this.nextTrack();
+        this.errorHandler = (e) => {
+            console.error('Audio error:', e);
+            console.log('Current audio source:', this.audioPlayer.src);
+        };
+        this.playHandler = () => {
+            // Duration detection when play starts (for Opus files)
+            if (!this.audioPlayer.duration || !isFinite(this.audioPlayer.duration)) {
+                console.log('Attempting duration detection on play...');
+                setTimeout(() => this.updateDuration(), 100);
+            }
+        };
+        this.durationChangeHandler = () => {
+            console.log('Duration changed:', this.audioPlayer.duration);
+            this.updateDuration();
+        };
+        
+        // Add event listeners
+        this.playPauseBtn.addEventListener('click', this.playPauseHandler);
+        this.progressBar.addEventListener('click', this.progressBarHandler);
+        this.volumeSlider.addEventListener('input', this.volumeHandler);
+        this.volumeBtn.addEventListener('click', this.muteHandler);
+        
+        // Audio element event listeners
+        this.audioPlayer.addEventListener('loadedmetadata', this.metadataHandler);
+        this.audioPlayer.addEventListener('timeupdate', this.timeupdateHandler);
+        this.audioPlayer.addEventListener('ended', this.endedHandler);
+        this.audioPlayer.addEventListener('error', this.errorHandler);
+        this.audioPlayer.addEventListener('play', this.playHandler);
+        this.audioPlayer.addEventListener('durationchange', this.durationChangeHandler);
+        this.audioPlayer.addEventListener('seeked', () => {
+            console.log('Seek completed, currentTime:', this.audioPlayer.currentTime);
+            this.isSeeking = false; // Clear seeking flag when seek is complete
+            this.updateProgress(); // Update progress after seek
+        });
     }
     
     // Load track data dynamically from markdown or JSON
@@ -485,16 +695,45 @@ class DynamicAlbumPlayer {
         // Play button event
         const playButton = document.getElementById('playButton');
         playButton.addEventListener('click', () => {
+            this.hasUserInteracted = true; // Enable autoplay
             this.hideTitlePage();
+            
+            // Start playing the first track immediately
+            setTimeout(() => {
+                if (this.audioPlayer && this.audioPlayer.src) {
+                    this.audioPlayer.play().then(() => {
+                        this.isPlaying = true;
+                        this.updatePlayPauseButton();
+                    }).catch(error => {
+                        console.log('Failed to start playing:', error);
+                    });
+                }
+            }, 1000); // Wait for title page transition
         });
 
-        // Credits toggle event
+        // Credits popup modal event
         const creditsToggle = document.getElementById('creditsToggle');
-        const creditsContent = document.getElementById('creditsContent');
+        const creditsPopup = document.getElementById('creditsPopup');
+        const creditsClose = document.getElementById('creditsClose');
+        const creditsOverlay = document.querySelector('.credits-popup-overlay');
         
         creditsToggle.addEventListener('click', () => {
-            creditsToggle.classList.toggle('expanded');
-            creditsContent.classList.toggle('expanded');
+            creditsPopup.classList.add('active');
+        });
+        
+        creditsClose.addEventListener('click', () => {
+            creditsPopup.classList.remove('active');
+        });
+        
+        creditsOverlay.addEventListener('click', () => {
+            creditsPopup.classList.remove('active');
+        });
+        
+        // Close popup with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && creditsPopup.classList.contains('active')) {
+                creditsPopup.classList.remove('active');
+            }
         });
     }
     
@@ -509,7 +748,10 @@ class DynamicAlbumPlayer {
             if (i === this.currentTrack) {
                 dot.classList.add('active');
             }
-            dot.addEventListener('click', () => this.goToTrack(i));
+            dot.addEventListener('click', () => {
+                this.hasUserInteracted = true;
+                this.goToTrack(i);
+            });
             navDots.appendChild(dot);
         }
     }
@@ -672,19 +914,162 @@ class DynamicAlbumPlayer {
     }
     
     setupEventListeners() {
+        // Track user interaction for autoplay
+        const trackInteraction = () => {
+            this.hasUserInteracted = true;
+            document.removeEventListener('click', trackInteraction);
+            document.removeEventListener('keydown', trackInteraction);
+            document.removeEventListener('touchstart', trackInteraction);
+        };
+        
+        document.addEventListener('click', trackInteraction);
+        document.addEventListener('keydown', trackInteraction);
+        document.addEventListener('touchstart', trackInteraction);
+        
+        // Screen tap to play/pause (avoid conflicts with UI elements and scrolling)
+        this.setupScreenTapPlayPause();
+        
         // Navigation dots (will be generated dynamically)
         
         // Navigation arrows
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
-        prevBtn.addEventListener('click', () => this.previousTrack());
-        nextBtn.addEventListener('click', () => this.nextTrack());
+        prevBtn.addEventListener('click', () => {
+            this.hasUserInteracted = true;
+            this.previousTrack();
+        });
+        nextBtn.addEventListener('click', () => {
+            this.hasUserInteracted = true;
+            this.nextTrack();
+        });
         
         // Keyboard controls
         document.addEventListener('keydown', (e) => this.handleKeyPress(e));
         
         // Touch/Swipe controls
         this.setupTouchControls();
+        
+        // Audio player visibility controls
+        this.setupAudioPlayerVisibility();
+    }
+    
+    setupScreenTapPlayPause() {
+        let touchStartY = 0;
+        let touchStartTime = 0;
+        let hasMoved = false;
+        
+        // Helper function to check if element should be ignored for tap
+        const shouldIgnoreTap = (target) => {
+            // Ignore clicks on interactive elements
+            const ignoredElements = [
+                '.navigation-dots', '.navigation-dot', '.dot', '#navDots', '#prevBtn', '#nextBtn',
+                '.audio-player-widget', '#playPauseBtn', '#progressBar', '#volumeSlider',
+                '.title-page', '.start-btn', 'button', 'input', 'a', '[role="button"]'
+            ];
+            
+            return ignoredElements.some(selector => {
+                return target.closest(selector) !== null;
+            });
+        };
+        
+        // Helper function to check cooldown period
+        const canTriggerPlayPause = () => {
+            const now = Date.now();
+            const timeSinceLastTrigger = now - this.lastPlayPauseTime;
+            return timeSinceLastTrigger > 1000; // 1 second cooldown
+        };
+        
+        // Helper function to trigger play/pause with cooldown
+        const triggerPlayPause = () => {
+            if (!canTriggerPlayPause()) {
+                console.log('Play/pause blocked - cooldown active');
+                return;
+            }
+            
+            this.lastPlayPauseTime = Date.now();
+            this.hasUserInteracted = true;
+            this.togglePlayPause();
+            this.showPlayPauseIndicator();
+        };
+        
+        // Handle mouse clicks (desktop)
+        document.addEventListener('click', (e) => {
+            if (!this.isLoadingComplete || shouldIgnoreTap(e.target)) return;
+            triggerPlayPause();
+        });
+        
+        // Handle touch events (mobile) - avoid conflicts with scrolling
+        document.addEventListener('touchstart', (e) => {
+            if (!this.isLoadingComplete || shouldIgnoreTap(e.target)) return;
+            
+            touchStartY = e.touches[0].clientY;
+            touchStartTime = Date.now();
+            hasMoved = false;
+        }, { passive: true });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!this.isLoadingComplete) return;
+            
+            const currentY = e.touches[0].clientY;
+            const diffY = Math.abs(currentY - touchStartY);
+            
+            // If moved more than 10px, consider it a scroll
+            if (diffY > 10) {
+                hasMoved = true;
+            }
+        }, { passive: true });
+        
+        document.addEventListener('touchend', (e) => {
+            if (!this.isLoadingComplete || shouldIgnoreTap(e.target)) return;
+            
+            const touchDuration = Date.now() - touchStartTime;
+            
+            // Only trigger play/pause if:
+            // 1. Touch was short (< 200ms)
+            // 2. Didn't move much (not a scroll)
+            if (touchDuration < 200 && !hasMoved) {
+                triggerPlayPause();
+            }
+        }, { passive: true });
+    }
+    
+    showPlayPauseIndicator() {
+        // Create or get existing indicator
+        let indicator = document.getElementById('playPauseIndicator');
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.id = 'playPauseIndicator';
+            indicator.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 20px;
+                border-radius: 50%;
+                font-size: 24px;
+                z-index: 1000;
+                pointer-events: none;
+                opacity: 0;
+                transition: opacity 0.2s ease;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            document.body.appendChild(indicator);
+        }
+        
+        // Update icon based on play state
+        indicator.textContent = this.isPlaying ? '⏸️' : '▶️';
+        
+        // Show and hide with animation
+        indicator.style.opacity = '1';
+        setTimeout(() => {
+            indicator.style.opacity = '0';
+        }, 1000); // Show for 1 second (same as cooldown)
     }
     
     loadTrack(trackNumber, startAnimations = true) {
@@ -711,6 +1096,9 @@ class DynamicAlbumPlayer {
         if (trackTotalControlEl) trackTotalControlEl.textContent = `/ ${this.totalTracks}`;
         if (trackNameControlEl) trackNameControlEl.textContent = track.title;
         
+        // Load audio if available
+        this.loadAudioForTrack(trackNumber);
+        
         // Update background image
         const backgroundImage = document.getElementById('backgroundImage');
         backgroundImage.style.backgroundImage = `url('${track.image}')`;
@@ -722,9 +1110,6 @@ class DynamicAlbumPlayer {
         if (startAnimations && this.isLoadingComplete) {
             this.startTrackAnimations(track.content);
         }
-        
-        // Load Spotify embed
-        this.loadSpotifyEmbed(track.spotifyKey);
         
         // Update navigation
         this.updateNavigationDots();
@@ -739,17 +1124,6 @@ class DynamicAlbumPlayer {
         setTimeout(() => {
             this.isTransitioning = false;
         }, 1500);
-    }
-    
-    loadSpotifyEmbed(spotifyKey) {
-        const spotifyContent = document.getElementById('spotifyContent');
-        
-        if (this.spotifyData && this.spotifyData[spotifyKey]) {
-            const embedCode = this.spotifyData[spotifyKey].spotify_embed_code;
-            spotifyContent.innerHTML = embedCode;
-        } else {
-            spotifyContent.innerHTML = '<p style="color: rgba(255,255,255,0.7); text-align: center; padding: 1rem;">Spotify bulunamadı</p>';
-        }
     }
     
     setupAudio(audioSrc) {
@@ -786,6 +1160,7 @@ class DynamicAlbumPlayer {
         
         this.currentTrack = trackNumber;
         this.loadTrack(trackNumber, true); // Start animations when changing tracks
+        this.loadAudioForTrack(trackNumber); // Load audio for the new track
     }
     
     nextTrack() {
@@ -863,6 +1238,363 @@ class DynamicAlbumPlayer {
             startX = 0;
             startY = 0;
         });
+    }
+
+    // Audio Player Methods - Optimized for Opus files
+    async loadAudioForTrack(trackNumber) {
+        if (this.preloadedAudios[trackNumber]) {
+            // Replace the current audio player with preloaded one
+            const preloadedAudio = this.preloadedAudios[trackNumber];
+            
+            // Remove old event listeners from current audio player
+            if (this.audioPlayer) {
+                this.audioPlayer.pause();
+                this.audioPlayer.currentTime = 0;
+            }
+            
+            // Replace the audio player reference
+            this.audioPlayer = preloadedAudio;
+            
+            // Re-setup event listeners for the new audio element
+            this.setupAudioEventListeners();
+            
+            // Update duration and time displays immediately since metadata is already loaded
+            let durationText = 'Unknown';
+            if (this.audioPlayer.duration && !isNaN(this.audioPlayer.duration) && isFinite(this.audioPlayer.duration)) {
+                durationText = `${this.audioPlayer.duration.toFixed(2)}s`;
+            } else if (this.audioPlayer.buffered.length > 0) {
+                const bufferedEnd = this.audioPlayer.buffered.end(this.audioPlayer.buffered.length - 1);
+                if (bufferedEnd && !isNaN(bufferedEnd) && isFinite(bufferedEnd)) {
+                    durationText = `~${bufferedEnd.toFixed(2)}s (from buffer)`;
+                }
+            } else {
+                durationText = 'Will detect during playback';
+            }
+            console.log(`✓ Using preloaded audio for track ${trackNumber}, duration: ${durationText}`);
+            
+            // Force update duration and progress immediately
+            this.updateDuration();
+            this.updateProgress();
+            
+            // Reset to beginning
+            this.audioPlayer.currentTime = 0;
+            
+            // Auto-play after loading (with user interaction check)
+            if (this.hasUserInteracted) {
+                this.audioPlayer.play().then(() => {
+                    this.isPlaying = true;
+                    this.updatePlayPauseButton();
+                }).catch(error => {
+                    console.log('Auto-play prevented:', error);
+                    this.isPlaying = false;
+                    this.updatePlayPauseButton();
+                });
+            } else {
+                // Reset play state when loading new track
+                this.isPlaying = false;
+                this.updatePlayPauseButton();
+            }
+        } else if (this.audioData && this.audioData.tracks[trackNumber]) {
+            // Fallback to old method if preload failed
+            const audioUrl = this.audioData.tracks[trackNumber];
+            
+            this.audioPlayer.src = audioUrl;
+            this.audioPlayer.load();
+            
+            // Wait for audio to be ready
+            const waitForReady = () => {
+                return new Promise((resolve) => {
+                    if (this.audioPlayer.readyState >= 2) { // HAVE_CURRENT_DATA
+                        resolve();
+                    } else {
+                        this.audioPlayer.addEventListener('canplay', resolve, { once: true });
+                    }
+                });
+            };
+            
+            await waitForReady();
+            
+            // Auto-play after loading (with user interaction check)
+            if (this.hasUserInteracted) {
+                this.audioPlayer.play().then(() => {
+                    this.isPlaying = true;
+                    this.updatePlayPauseButton();
+                }).catch(error => {
+                    console.log('Auto-play prevented:', error);
+                    this.isPlaying = false;
+                    this.updatePlayPauseButton();
+                });
+            } else {
+                // Reset play state when loading new track
+                this.isPlaying = false;
+                this.updatePlayPauseButton();
+            }
+        }
+    }
+
+    togglePlayPause() {
+        if (this.audioPlayer.paused) {
+            this.audioPlayer.play().then(() => {
+                this.isPlaying = true;
+                this.updatePlayPauseButton();
+            });
+        } else {
+            this.audioPlayer.pause();
+            this.isPlaying = false;
+            this.updatePlayPauseButton();
+        }
+    }
+
+    updatePlayPauseButton() {
+        const playIcon = this.playPauseBtn.querySelector('.play-icon');
+        const pauseIcon = this.playPauseBtn.querySelector('.pause-icon');
+        
+        if (this.isPlaying) {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+        } else {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+        }
+    }
+
+    seekAudio(e) {
+        console.log('Seek triggered, event:', e);
+        console.log('Audio duration:', this.audioPlayer.duration);
+        console.log('Audio readyState:', this.audioPlayer.readyState);
+        
+        // Ensure audio is loaded and has valid finite duration
+        if (!this.audioPlayer.duration || isNaN(this.audioPlayer.duration) || !isFinite(this.audioPlayer.duration)) {
+            console.log('Cannot seek: invalid duration:', this.audioPlayer.duration);
+            return;
+        }
+        
+        const rect = this.progressBar.getBoundingClientRect();
+        const pos = (e.clientX - rect.left) / rect.width;
+        const newTime = pos * this.audioPlayer.duration;
+        
+        console.log('Click position:', pos, 'New time:', newTime);
+        
+        // Ensure the new time is within bounds and finite
+        if (newTime >= 0 && newTime <= this.audioPlayer.duration && isFinite(newTime)) {
+            // Pause before seeking for better reliability
+            const wasPlaying = !this.audioPlayer.paused;
+            console.log('Was playing:', wasPlaying, 'Setting currentTime to:', newTime);
+            
+            // Temporarily flag that we're seeking to prevent timeupdate interference
+            this.isSeeking = true;
+            
+            try {
+                this.audioPlayer.currentTime = newTime;
+                console.log('currentTime set successfully to:', this.audioPlayer.currentTime);
+                
+                // Update progress immediately
+                this.updateProgress();
+                
+                // Resume playing if it was playing before
+                if (wasPlaying) {
+                    setTimeout(() => {
+                        this.audioPlayer.play().catch(err => console.log('Play error:', err));
+                    }, 100);
+                }
+            } catch (error) {
+                console.error('Error setting currentTime:', error);
+            }
+            
+            // Clear seeking flag after a short delay
+            setTimeout(() => {
+                this.isSeeking = false;
+            }, 200);
+            
+        } else {
+            console.log('Cannot seek: invalid time:', newTime);
+        }
+    }
+
+    updateProgress() {
+        // Skip update if we're currently seeking to prevent interference
+        if (this.isSeeking) return;
+        
+        if (this.audioPlayer && this.audioPlayer.duration && !isNaN(this.audioPlayer.duration) && isFinite(this.audioPlayer.duration)) {
+            const progress = (this.audioPlayer.currentTime / this.audioPlayer.duration) * 100;
+            this.progressFill.style.width = progress + '%';
+            
+            this.currentTimeDisplay.textContent = this.formatTime(this.audioPlayer.currentTime);
+        } else {
+            this.progressFill.style.width = '0%';
+            this.currentTimeDisplay.textContent = '0:00';
+        }
+    }
+
+    updateDuration() {
+        if (this.audioPlayer) {
+            // Opus dosyaları için duration detection iyileştirmesi
+            let duration = this.audioPlayer.duration;
+            
+            // Duration infinity veya invalid ise farklı yöntemler dene
+            if (!duration || isNaN(duration) || !isFinite(duration)) {
+                // Alternatif duration detection
+                if (this.audioPlayer.buffered.length > 0) {
+                    duration = this.audioPlayer.buffered.end(this.audioPlayer.buffered.length - 1);
+                }
+            }
+            
+            // Hala geçerli bir duration yoksa
+            if (duration && !isNaN(duration) && isFinite(duration) && duration > 0) {
+                this.durationDisplay.textContent = this.formatTime(duration);
+            } else {
+                this.durationDisplay.textContent = '--:--';
+                console.log('Duration still not available, will retry during playback');
+                
+                // Duration olmasa bile audio element'i dinlemeye devam et
+                if (this.audioPlayer) {
+                    // Playback sırasında duration gelirse güncelle
+                    const durationUpdateHandler = () => {
+                        if (this.audioPlayer.duration && !isNaN(this.audioPlayer.duration) && isFinite(this.audioPlayer.duration)) {
+                            this.durationDisplay.textContent = this.formatTime(this.audioPlayer.duration);
+                            this.audioPlayer.removeEventListener('timeupdate', durationUpdateHandler);
+                            console.log('Duration detected during playback:', this.audioPlayer.duration);
+                        }
+                    };
+                    this.audioPlayer.addEventListener('timeupdate', durationUpdateHandler);
+                }
+            }
+        } else {
+            this.durationDisplay.textContent = '--:--';
+        }
+    }
+
+    setVolume() {
+        this.audioPlayer.volume = this.volumeSlider.value / 100;
+        this.updateVolumeButton();
+    }
+
+    toggleMute() {
+        if (this.audioPlayer.volume > 0) {
+            this.audioPlayer.volume = 0;
+            this.volumeSlider.value = 0;
+        } else {
+            this.audioPlayer.volume = 0.7;
+            this.volumeSlider.value = 70;
+        }
+        this.updateVolumeButton();
+    }
+
+    updateVolumeButton() {
+        const volume = this.audioPlayer.volume;
+        if (volume === 0) {
+            this.volumeBtn.textContent = '🔇';
+        } else if (volume < 0.5) {
+            this.volumeBtn.textContent = '🔉';
+        } else {
+            this.volumeBtn.textContent = '🔊';
+        }
+    }
+
+    formatTime(seconds) {
+        if (isNaN(seconds) || !isFinite(seconds) || seconds < 0) return '0:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    setupAudioPlayerVisibility() {
+        const audioWidget = document.getElementById('audioPlayerWidget');
+        let hideTimeout;
+        let isDragging = false;
+        let startY = 0;
+        let currentY = 0;
+        
+        // Initially show the widget, then hide after delay
+        audioWidget.classList.add('visible');
+        
+        // Desktop: Hide on mouse leave, show on hover with larger detection area
+        const showWidget = () => {
+            clearTimeout(hideTimeout);
+            audioWidget.classList.add('visible');
+        };
+        
+        const hideWidget = () => {
+            hideTimeout = setTimeout(() => {
+                if (!isDragging) {
+                    audioWidget.classList.remove('visible');
+                }
+            }, 2000); // 2 second delay
+        };
+        
+        // Hover detection for bottom area of screen
+        document.addEventListener('mousemove', (e) => {
+            const windowHeight = window.innerHeight;
+            const mouseY = e.clientY;
+            
+            // Show widget when mouse is in bottom 150px of screen
+            if (mouseY > windowHeight - 150) {
+                showWidget();
+            } else if (mouseY < windowHeight - 200) {
+                // Hide only if mouse is well away from bottom
+                if (audioWidget.classList.contains('visible')) {
+                    hideWidget();
+                }
+            }
+        });
+        
+        audioWidget.addEventListener('mouseenter', showWidget);
+        audioWidget.addEventListener('mouseleave', hideWidget);
+        
+        // Mobile: Drag to show/hide
+        audioWidget.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            audioWidget.style.transition = 'none';
+            clearTimeout(hideTimeout);
+        });
+        
+        audioWidget.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            
+            currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
+            
+            // Only allow downward dragging when visible, upward when hidden
+            if (audioWidget.classList.contains('visible') && deltaY > 0) {
+                const translateY = Math.min(deltaY, 200);
+                audioWidget.style.transform = `translateY(${translateY}px)`;
+            } else if (!audioWidget.classList.contains('visible') && deltaY < 0) {
+                const translateY = Math.max(deltaY, -200);
+                audioWidget.style.transform = `translateY(calc(100% - 20px + ${translateY}px))`;
+            }
+        });
+        
+        audioWidget.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            
+            const deltaY = currentY - startY;
+            audioWidget.style.transition = '';
+            audioWidget.style.transform = '';
+            
+            // Threshold for showing/hiding (80px)
+            if (Math.abs(deltaY) > 80) {
+                if (deltaY > 0 && audioWidget.classList.contains('visible')) {
+                    // Dragged down - hide
+                    audioWidget.classList.remove('visible');
+                } else if (deltaY < 0 && !audioWidget.classList.contains('visible')) {
+                    // Dragged up - show
+                    audioWidget.classList.add('visible');
+                }
+            }
+            
+            isDragging = false;
+            startY = 0;
+            currentY = 0;
+        });
+        
+        // Auto-hide after initial display
+        setTimeout(() => {
+            if (!audioWidget.matches(':hover')) {
+                audioWidget.classList.remove('visible');
+            }
+        }, 5000); // Hide after 5 seconds initially
     }
 }
 
@@ -967,3 +1699,5 @@ function initializeSpotifyToggle() {
         });
     }
 }
+
+

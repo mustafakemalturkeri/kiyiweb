@@ -1,0 +1,25 @@
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# macOS folder attributes
+__MACOSX/
+
+# Thumbnails
+._*
+
+# Audio files (exclude all except .webm)
+*.mp3
+*.wav
+*.aac
+*.flac
+*.ogg
+*.m4a
+*.wma
+*.aiff
+*.alac
+*.opus
+
+# Keep .webm files
+!*.webm
