@@ -560,7 +560,7 @@ body {
     padding: 1.5rem;
     border-radius: 10px;
     min-height: 1.3rem; /* Prevent layout shift */
-    text-align: justify; /* Justify paragraphs */
+    text-align: left; /* Justify paragraphs */
     font-family: 'Montserrat', sans-serif;
 }
 
