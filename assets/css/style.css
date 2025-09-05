@@ -151,6 +151,34 @@ body {
     padding-top: 40vh; /* Start from about 40% down from top */
 }
 
+/* Renk Logo Styles */
+.renk-logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+}
+
+.renk-logo a {
+    display: block;
+    text-decoration: none;
+}
+
+.logo-img {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    filter: brightness(0.9);
+}
+
+.logo-img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    filter: brightness(1.1);
+}
+
 .album-info {
     margin-top: 4rem; /* Push credits section down */
     display: flex;
@@ -1086,6 +1114,17 @@ body {
         padding: 1rem;
         padding-top: 40vh; /* Same as desktop - start from middle of screen */
         justify-content: flex-start !important; /* Force flex-start alignment on mobile */
+    }
+    
+    /* Mobile Renk Logo */
+    .renk-logo {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .logo-img {
+        width: 45px;
+        height: 45px;
     }
     
     .play-button {
